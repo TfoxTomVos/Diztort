@@ -166,7 +166,8 @@ bool DiztortAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* DiztortAudioProcessor::createEditor()
 {
-    return new DiztortAudioProcessorEditor (*this);
+    //return new DiztortAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -181,6 +182,25 @@ void DiztortAudioProcessor::setStateInformation (const void* data, int sizeInByt
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout 
+    DiztortAudioProcessor::createParameterLayout() {
+
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    layout.add(std::make_unique <juce::AudioParameterFloat>("Input Gain", "Input Gain",
+        juce::NormalisableRange<float>(-24.f, 24.f, 0.1f), 0.f));
+    layout.add(std::make_unique <juce::AudioParameterFloat>("Drive", "Drive",
+        juce::NormalisableRange<float>(0.f, 10.f, 0.1f), 0.f));
+    layout.add(std::make_unique <juce::AudioParameterFloat>("Curve", "Curve",
+        juce::NormalisableRange<float>(-10.f, 10.f, 0.1f), 0.f));
+    layout.add(std::make_unique <juce::AudioParameterFloat>("Cap", "Cap",
+        juce::NormalisableRange<float>(0.f, 1.f, 0.1f), 0.f));
+    layout.add(std::make_unique <juce::AudioParameterFloat>("Mix", "Mix",
+        juce::NormalisableRange<float>(0.f, 1.f, 0.01f), 0.5f));
+    return layout;
+
 }
 
 //==============================================================================
